@@ -7,7 +7,7 @@ La IP de la VM la obtuve con el comando <b>hostname -I</b>, ya que trabajo desde
 <b>- IP del Cliente:</b> IP de la VM (ej: 10.0.2.15).
 <br>
 <b>- Puerto:</b> Seleccionado manualmente (6666).
-<br><br>
+<br>
 
 <h3>Cómo ejecutar:</h3>
 Desde la carpeta Socket_Stream_TCP/src ejecuta en la terminal: 
@@ -17,7 +17,6 @@ Desde la carpeta Socket_Stream_TCP/src ejecuta en la terminal:
 - java sockets.tcp.ServidorSocketStream (Ejecuta el .java)
 <br><br>
 <img src="./img/01_server.jpeg" alt="Captura 1" width="500"/> 
-<br><br>
 En otra terminal ejecuta, desde la misma ruta anterior:
 <br><br>
 - javac sockets/tcp/ClienteSocketStream.java (Compila .java del cliente)
