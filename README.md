@@ -1,6 +1,13 @@
 <h1>EJERCICIO 2</h1>
 Lectura correcta: bytes leídos y explicación del "buffer basura".
 <br><br>
+
+<b>- IP del Servidor:</b> localhost
+<br>
+<b>- IP del Cliente:</b> localhost
+<br>
+<b>- Puerto:</b> 5555
+
 <h2> Tabla: Problema / Causa / Solución </h2>
 
 <table>
