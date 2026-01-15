@@ -9,41 +9,41 @@ import java.net.ServerSocket;
 
 public class ServidorSocketStream {
 
-    public static void main(String[] args) {
-        try {
-            System.out.println("Creando socket servidor");
+	public static void main(String[] args) {
+		System.out.println("Creando socket servidor");
+		try (ServerSocket serverSocket = new ServerSocket()) {
+			System.out.println("Realizando el bind");
 
-            ServerSocket serverSocket = new ServerSocket();
+			InetSocketAddress addr = new InetSocketAddress("localhost", 5555);
+			serverSocket.bind(addr);
 
-            System.out.println("Realizando el bind");
+			System.out.println("Aceptando conexiones");
 
-            InetSocketAddress addr = new InetSocketAddress("localhost", 5555);
-            serverSocket.bind(addr);
+			try (Socket newSocket = serverSocket.accept()) {
+				System.out.println("Conexión recibida");
 
-            System.out.println("Aceptando conexiones");
+				InputStream is = newSocket.getInputStream();
+				OutputStream os = newSocket.getOutputStream();
 
-            Socket newSocket = serverSocket.accept();
+				byte[] mensaje = new byte[25];
+				// PROBLEMA TÍPICO
+				/*
+				 * is.read(mensaje); // Si el mensaje es "Hola" (4 bytes)
+				 * 
+				 * System.out.println("Mensaje recibido: " + new String(mensaje)); // "Hola" +
+				 * bytes basura
+				 */
 
-            System.out.println("Conexión recibida");
+				// SOLUCIÓN
+				int leidos = is.read(mensaje);
+				System.out.println("Mensaje recibido: " + new String(mensaje, 0, leidos)); // "Hola" sin bytes basura
+				
+				// No hace falta .close() ya que al salir del try se cierra la conexión
+			} 
 
-            InputStream is = newSocket.getInputStream();
-            OutputStream os = newSocket.getOutputStream();
-
-            byte[] mensaje = new byte[25];
-            is.read(mensaje);
-
-            System.out.println("Mensaje recibido: " + new String(mensaje));
-
-            System.out.println("Cerrando el nuevo socket");
-            newSocket.close();
-
-            System.out.println("Cerrando el socket servidor");
-            serverSocket.close();
-
-            System.out.println("Terminado");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Terminado");
+	}
 }

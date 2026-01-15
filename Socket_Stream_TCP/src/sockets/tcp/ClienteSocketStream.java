@@ -23,7 +23,7 @@ public class ClienteSocketStream {
 
             System.out.println("Enviando mensaje");
 
-            String mensaje = "mensaje desde el cliente";
+            String mensaje = "Hola";
             os.write(mensaje.getBytes());
 
             System.out.println("Mensaje enviado");
