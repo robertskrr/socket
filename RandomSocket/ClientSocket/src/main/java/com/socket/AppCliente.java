@@ -7,10 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
 
-/**
- * Hello world!
- *
- */
 public class AppCliente {
 	static final int PORT = 7777;
 
@@ -27,7 +23,12 @@ public class AppCliente {
 			BufferedReader entradaSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// Leer los datos introducidos por consola
 			BufferedReader entradaConsola = new BufferedReader(new InputStreamReader(System.in));
-
+			
+			// Mensaje de saludo del servidor
+			String saludo = entradaSocket.readLine();
+			System.out.println(saludo);
+			
+			// Después del saludo pide el primer número
 			System.out.println("<Cliente>Inserte un número (o 'salir'): ");
 			// Leemos de consola y enviamos al server
 			salida.println(entradaConsola.readLine());

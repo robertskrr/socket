@@ -9,10 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Random;
 
-/**
- * Hello world!
- *
- */
 public class AppServerSocket {
 	private final static int PORT = 7777;
 	private static int numGen;
@@ -34,7 +30,10 @@ public class AppServerSocket {
 			PrintWriter salida = new PrintWriter(client.getOutputStream(), true);
 			// Para recibir datos al cliente <<<
 			BufferedReader entrada = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
+			
+			// Saludo del servidor mostrando reglas del juego
+			salida.println("<Server> Conectado con éxito al juego 'Número mágico'. Adivina el número (1-10) o escribe 'salir' para finalizar el juego");
+			
 			// Establecemos a cero los intentos por si acaso
 			intentos = 0;
 
