@@ -28,7 +28,7 @@ public class AppCliente {
 			// Leer los datos introducidos por consola
 			BufferedReader entradaConsola = new BufferedReader(new InputStreamReader(System.in));
 
-			System.out.println("<Cliente>Inserte un número: ");
+			System.out.println("<Cliente>Inserte un número (o 'salir'): ");
 			// Leemos de consola y enviamos al server
 			salida.println(entradaConsola.readLine());
 
@@ -36,6 +36,9 @@ public class AppCliente {
 			while ((datoRec = entradaSocket.readLine()) != null) {
 				// Mostrar el dato recibido por consola
 				System.out.println(datoRec);
+				if (datoRec.contains("FIN") || datoRec.contains("finalizado")) {
+					break;
+				}
 				// Leer la consola y enviar al server
 				salida.println(entradaConsola.readLine());
 			}

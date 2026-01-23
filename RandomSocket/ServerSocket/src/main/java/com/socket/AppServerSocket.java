@@ -16,6 +16,7 @@ import java.util.Random;
 public class AppServerSocket {
 	private final static int PORT = 7777;
 	private static int numGen;
+	private static int intentos = 0;
 
 	public static void main(String[] args) {
 		// Generar número
@@ -34,17 +35,27 @@ public class AppServerSocket {
 			// Para recibir datos al cliente <<<
 			BufferedReader entrada = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-			String datoRec, datoEnv;
+			// Establecemos a cero los intentos por si acaso
+			intentos = 0;
 
+			String datoRec, datoEnv;
 			// leeremos todos los mensajes recibidos
 			// comprobamos si es el número mágico
 			while ((datoRec = entrada.readLine()) != null) {
-
+				if (datoRec.contains("salir")) {
+					salida.println("Juego finalizado :(");
+					break;
+				}
+				intentos++;
 				datoEnv = checkNumero(datoRec);
-
 				// Retornamos al cliente el resultado
 				// de la comprobación
 				salida.println(datoEnv);
+
+				// Si contiene la palabra FIN cierra la conexión
+				if (datoEnv.contains("FIN")) {
+					break;
+				}
 			}
 
 			// Cerramos todo
@@ -77,8 +88,9 @@ public class AppServerSocket {
 				return "<server>El número es mayor que el número mágico";
 			} else if (numero < numGen) {
 				return "<server>El número es menor que el número mágico";
-			} else {
-				return "<server>Ha adivinado el número";
+			} else { // Muestra los intentos
+				return "<server>Ha adivinado el número. FIN DEL JUEGO. -- ¡ENHORABUENA! HAS GANADO CON " + intentos
+						+ " INTENTOS.";
 			}
 
 		} catch (NumberFormatException e) {
