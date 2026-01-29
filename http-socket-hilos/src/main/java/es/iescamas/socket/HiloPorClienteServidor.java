@@ -99,14 +99,24 @@ public class HiloPorClienteServidor implements Runnable {
 
             long time = System.currentTimeMillis();
             String fecha = new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date(time));
-
+            // MEJORA 1: RUTA DINÁMICA
+            String mensajeBienvenida = "Servidor OK";
+            if (path.startsWith("/nombre/")) {
+				// Extraemos el nombre
+            	String nombre = path.substring(8);
+            	
+            	// Si no esta vacío cambiamos el mensaje
+            	if (!nombre.isEmpty()) {
+					mensajeBienvenida = "Hola " + nombre;
+				}
+			}
             String body = "<html>"
                     + "<head>"
                     + "<link rel='icon' href='/favicon.ico'>"
                     + "<title>Programación de Servicios y Procesos</title>"
                     + "</head>"
                     + "<body style='background-color: coral;'>"
-                    + "<h3 style='color:blue;'>Servidor OK</h3>"
+                    + "<h3 style='color:blue;'>" + mensajeBienvenida + "</h3>"
                     + "<p>Path: " + path + "</p>"
                     + "<p>Server: " + fecha + "</p>"
                     + "<p>Hilo: " + Thread.currentThread().getName() + "</p>"
