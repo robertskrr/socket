@@ -99,9 +99,17 @@ public class HiloPorClienteServidor implements Runnable {
 
             long time = System.currentTimeMillis();
             String fecha = new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date(time));
+            
             // MEJORA 1: RUTA DINÁMICA
+            // MEJORA 2: MANEJO DE RUTAS 404 NOT FOUND
             String mensajeBienvenida = "Servidor OK";
-            if (path.startsWith("/nombre/")) {
+            String body;
+            String estado = "200 OK";
+            
+            // Ruta vacía
+            if (path.equals("/")) {
+            	body = generarHtmlDetallado(mensajeBienvenida, path, fecha, clientIp, clientPort, remote);
+			} else if (path.startsWith("/nombre/")) { // Ruta con nombre para saludo
 				// Extraemos el nombre
             	String nombre = path.substring(8);
             	
@@ -109,26 +117,18 @@ public class HiloPorClienteServidor implements Runnable {
             	if (!nombre.isEmpty()) {
 					mensajeBienvenida = "Hola " + nombre;
 				}
+            	body = generarHtmlDetallado(mensajeBienvenida, path, fecha, clientIp, clientPort, remote);
+            } else {
+            	// Ruta inexistente
+				estado = "404 Not Found";
+				body = "<html><body><h1>404 Not Found</h1><p>La página no existe.</p></body></html>";
 			}
-            String body = "<html>"
-                    + "<head>"
-                    + "<link rel='icon' href='/favicon.ico'>"
-                    + "<title>Programación de Servicios y Procesos</title>"
-                    + "</head>"
-                    + "<body style='background-color: coral;'>"
-                    + "<h3 style='color:blue;'>" + mensajeBienvenida + "</h3>"
-                    + "<p>Path: " + path + "</p>"
-                    + "<p>Server: " + fecha + "</p>"
-                    + "<p>Hilo: " + Thread.currentThread().getName() + "</p>"
-                    + "<p>Cliente IP: " + clientIp + "</p>"
-                    + "<p>Cliente puerto: " + clientPort + "</p>"
-                    + "<p>Remote: " + remote + "</p>"
-                    + "</body></html>";
+            
 
             byte[] bodyBytes = body.getBytes(StandardCharsets.UTF_8);
 
             String headers =
-                    "HTTP/1.1 200 OK\r\n" +
+                    "HTTP/1.1" + estado + "\r\n" +
                     "Content-Type: text/html; charset=UTF-8\r\n" +
                     "Content-Length: " + bodyBytes.length + "\r\n" +
                     "Connection: close\r\n" +
@@ -143,6 +143,30 @@ public class HiloPorClienteServidor implements Runnable {
             System.out.println("[" + Thread.currentThread().getName() + "] Cliente: " + remote);
             System.out.println("[" + Thread.currentThread().getName() + "] Petición procesada: " + fecha);
         }
+    }
+    
+    /**
+     * Genera el html detallado al que solo hay que pasar los datos
+     * @param titulo
+     * @param path
+     * @param fecha
+     * @param ip
+     * @param port
+     * @param remote
+     * @return html detallado
+     */
+    private String generarHtmlDetallado(String titulo, String path, String fecha, String ip, int port, String remote) {
+        return "<html>"
+                + "<head><link rel='icon' href='/favicon.ico'><title>PSP</title></head>"
+                + "<body style='background-color: coral;'>"
+                + "<h3 style='color:blue;'>" + titulo + "</h3>"
+                + "<p>Path: " + path + "</p>"
+                + "<p>Server: " + fecha + "</p>"
+                + "<p>Hilo: " + Thread.currentThread().getName() + "</p>"
+                + "<p>Cliente IP: " + ip + "</p>"
+                + "<p>Cliente puerto: " + port + "</p>"
+                + "<p>Remote: " + remote + "</p>"
+                + "</body></html>";
     }
 
     /**
