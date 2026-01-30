@@ -14,6 +14,9 @@ import java.util.Date;
 /**
  * Servidor TCP que atiende clientes mediante un hilo por conexión.
  * Sirve HTML básico y un favicon desde src/main/resources/favicon.ico
+ * @author Robert Esquerre Valiente
+ * @version 1.0
+ * @since 2026-01
  */
 public class HiloPorClienteServidor implements Runnable {
 
@@ -29,6 +32,10 @@ public class HiloPorClienteServidor implements Runnable {
     /** Referencia al hilo que ejecuta run(). */
     protected Thread runningThread = null;
 
+    /**
+     * Constructor
+     * @param serverPort Puerto del servidor
+     */
     public HiloPorClienteServidor(int serverPort) {
         this.serverPort = serverPort;
     }
@@ -67,6 +74,15 @@ public class HiloPorClienteServidor implements Runnable {
 
     /**
      * Procesa la conexión de un cliente.
+     * @param clientSocket Conexión con el cliente
+     * @throws IOException
+     * @apiNote Ejemplos de rutas:
+     * <pre>
+     * http://localhost:9090/nombre/Robert
+     * </pre>
+     * - Ruta dinámica: /nombre/Robert --> Responde "Hola Robert"
+     * - Ruta vacía: / --> Responde "Servidor OK"
+     * - Ruta desconocida: Responde "404 Not Found" 
      */
     private void processClientRequest(Socket clientSocket) throws IOException {
         try (clientSocket;
@@ -148,13 +164,13 @@ public class HiloPorClienteServidor implements Runnable {
     // MEJORA 3: Mejorar el HTML
     /**
      * Genera el html detallado al que solo hay que pasar los datos
-     * @param titulo
-     * @param path
-     * @param fecha
-     * @param ip
-     * @param port
-     * @param remote
-     * @return html detallado
+     * @param titulo Mensaje principal de la página
+     * @param path Ruta del cliente
+     * @param fecha Hora actual del servidor
+     * @param ip Dirección IP del cliente
+     * @param port Puerto remoto del cliente
+     * @param remote Dirección completa del socket remoto
+     * @return HTML Detallado
      */
     private String generarHtmlDetallado(String titulo, String path, String fecha, String ip, int port, String remote) {
     	return "<html>"
@@ -210,6 +226,10 @@ public class HiloPorClienteServidor implements Runnable {
         }
     }
 
+    /**
+     * 
+     * @return true si el servidor ha recibido la orden de parada o está cerrado
+     */
     private synchronized boolean isStopped() {
         return isStopped;
     }
