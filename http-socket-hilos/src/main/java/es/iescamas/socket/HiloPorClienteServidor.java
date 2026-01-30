@@ -102,7 +102,7 @@ public class HiloPorClienteServidor implements Runnable {
             
             // MEJORA 1: RUTA DINÁMICA
             // MEJORA 2: MANEJO DE RUTAS 404 NOT FOUND
-            String mensajeBienvenida = "Servidor OK";
+            String mensajeBienvenida = "👍 Servidor OK 👍";
             String body;
             String estado = "200 OK";
             
@@ -115,7 +115,7 @@ public class HiloPorClienteServidor implements Runnable {
             	
             	// Si no esta vacío cambiamos el mensaje
             	if (!nombre.isEmpty()) {
-					mensajeBienvenida = "Hola " + nombre;
+					mensajeBienvenida = "😊 Hola " + nombre + " 😊";
 				}
             	body = generarHtmlDetallado(mensajeBienvenida, path, fecha, clientIp, clientPort, remote);
             } else {
@@ -145,6 +145,7 @@ public class HiloPorClienteServidor implements Runnable {
         }
     }
     
+    // MEJORA 3: Mejorar el HTML
     /**
      * Genera el html detallado al que solo hay que pasar los datos
      * @param titulo
@@ -156,16 +157,28 @@ public class HiloPorClienteServidor implements Runnable {
      * @return html detallado
      */
     private String generarHtmlDetallado(String titulo, String path, String fecha, String ip, int port, String remote) {
-        return "<html>"
-                + "<head><link rel='icon' href='/favicon.ico'><title>PSP</title></head>"
-                + "<body style='background-color: coral;'>"
-                + "<h3 style='color:blue;'>" + titulo + "</h3>"
-                + "<p>Path: " + path + "</p>"
-                + "<p>Server: " + fecha + "</p>"
-                + "<p>Hilo: " + Thread.currentThread().getName() + "</p>"
-                + "<p>Cliente IP: " + ip + "</p>"
-                + "<p>Cliente puerto: " + port + "</p>"
-                + "<p>Remote: " + remote + "</p>"
+    	return "<html>"
+                + "<head>"
+                + "<title>Servidor PSP</title>"
+                + "<style>"
+                + "  body { background-color: #fdf2f0; font-family: Arial; text-align: center; padding-top: 50px; }"
+                + "  .caja { background-color: white; border: 3px solid coral; border-radius: 10px; "
+                + "          display: inline-block; padding: 20px; text-align: left; min-width: 300px; }"
+                + "  h3 { color: blue; margin-top: 0; }"
+                + "  .dato { font-weight: bold; color: #555; }"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "  <div class='caja'>"
+                + "    <h3>" + titulo + "</h3>"
+                + "    <p><span class='dato'>📍 Ruta:</span> " + path + "</p>"
+                + "    <p><span class='dato'>🕒 Fecha:</span> " + fecha + "</p>"
+                + "    <p><span class='dato'>🧵 Hilo:</span> " + Thread.currentThread().getName() + "</p>"
+                + "    <hr>"
+                + "    <p><span class='dato'>💻 Tu IP:</span> " + ip + "</p>"
+                + "    <p><span class='dato'>🔌 Puerto:</span> " + port + "</p>"
+                + "<p><span class='dato'>🔗 Remote:</span> " + remote + "</p>"
+                + "  </div>"
                 + "</body></html>";
     }
 
