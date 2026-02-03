@@ -144,7 +144,7 @@ public class HiloPorClienteServidor implements Runnable {
             byte[] bodyBytes = body.getBytes(StandardCharsets.UTF_8);
 
             String headers =
-                    "HTTP/1.1" + estado + "\r\n" +
+                    "HTTP/1.1 " + estado + "\r\n" +
                     "Content-Type: text/html; charset=UTF-8\r\n" +
                     "Content-Length: " + bodyBytes.length + "\r\n" +
                     "Connection: close\r\n" +
